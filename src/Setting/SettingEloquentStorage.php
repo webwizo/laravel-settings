@@ -27,11 +27,11 @@ class SettingEloquentStorage implements SettingStorage
     public function all($fresh = false)
     {
         if ($fresh) {
-            return $this->modelQuery()->pluck('val', 'name');
+            return $this->modelQuery()->pluck('val', 'name')->dynamic($fresh);
         }
 
         return Cache::rememberForever($this->getSettingsCacheKey(), function () {
-            return $this->modelQuery()->pluck('val', 'name');
+            return $this->modelQuery()->pluck('val', 'name')->dynamic();
         });
     }
 
@@ -106,7 +106,7 @@ class SettingEloquentStorage implements SettingStorage
      */
     protected function getSettingsCacheKey()
     {
-        return $this->settingsCacheKey.'.'.$this->settingsGroupName;
+        return $this->settingsCacheKey . '.' . $this->settingsGroupName;
     }
 
     /**
